@@ -1,27 +1,19 @@
-#  BIOPET tool suite
+#  MpileupToVcf
 This tool is part of BIOPET tool suite that is developed at LUMC by [the SASC team](http://sasc.lumc.nl/). 
 Each tool in the BIOPET tool suite is meant to offer a standalone function that can be used to perform a
 dedicate data analysis task or added as part of [BIOPET pipelines](http://biopet-docs.readthedocs.io/en/latest/).
 
 #  About this tool
-<Description of a tool>
+This tool enables a user to extract a VCF file out a mpileup file generated from the BAM file using *samtools mpileup*,
+for instance. The tool can also stream through STDin and STDout so that it is not necessary to store the mpileup file
+on disk. Mpileup files can to be very large because they describe each covered base position in the genome on a per
+read basis, so it is not desired to store them.
 
-#  Installation
-This tool requires Java 8 to be installed on your device. Download Java 8 
-[here](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) 
-or install via your distribution's package manager.
+#  Documentation
+For documentation and manuals visit the [readthedocs page](http://biopet-MpileupToVcf.readthedocs.io/en/latest/).
 
-Download the latest version of <tool> [here](https://github.com/biopet/<tool>/releases). 
-To generate the usage run:
-```bash
-java -jar <tool>-version.jar --help
-```
-
-#  Manual
-<Help doc of a tool>
 
 #  Contact
-
 
 <p>
   <!-- Obscure e-mail address for spammers -->
