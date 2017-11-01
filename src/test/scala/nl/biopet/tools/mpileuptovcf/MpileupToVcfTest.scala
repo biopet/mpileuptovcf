@@ -11,6 +11,7 @@ import org.testng.annotations.Test
 import scala.collection.JavaConversions._
 
 class MpileupToVcfTest extends ToolTest[Args] {
+  def toolCommand: MpileupToVcf.type = MpileupToVcf
   @Test
   def testNoArgs(): Unit = {
     intercept[IllegalArgumentException] {
