@@ -5,11 +5,11 @@ scalaVersion := "2.11.11"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-libraryDependencies += "com.github.biopet" %% "tool-utils" % "0.1"
+libraryDependencies += "com.github.biopet" %% "tool-utils" % "0.2-SNAPSHOT" changing()
 libraryDependencies += "com.github.biopet" %% "ngs-utils" % "0.1"
 libraryDependencies += "colt" % "colt" % "1.2.0" changing()
 
-libraryDependencies += "com.github.biopet" %% "test-utils" % "0.1" % Test
+libraryDependencies += "com.github.biopet" %% "tool-test-utils" % "0.1-SNAPSHOT" % Test changing()
 
 mainClass in assembly := Some("nl.biopet.tools.mpileuptovcf.MpileupToVcf")
 

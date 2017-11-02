@@ -5,12 +5,13 @@ import java.io.File
 import htsjdk.samtools.reference.IndexedFastaSequenceFile
 import htsjdk.variant.variantcontext.Allele
 import htsjdk.variant.vcf.VCFFileReader
-import nl.biopet.test.BiopetTest
+import nl.biopet.utils.test.tools.ToolTest
 import org.testng.annotations.Test
 
 import scala.collection.JavaConversions._
 
-class MpileupToVcfTest extends BiopetTest {
+class MpileupToVcfTest extends ToolTest[Args] {
+  def toolCommand: MpileupToVcf.type = MpileupToVcf
   @Test
   def testNoArgs(): Unit = {
     intercept[IllegalArgumentException] {
