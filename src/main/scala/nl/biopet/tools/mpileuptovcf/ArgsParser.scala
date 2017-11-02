@@ -13,23 +13,23 @@ class ArgsParser(cmdName: String) extends AbstractOptParser[Args](cmdName) {
   } text "out is a required file property"
   opt[String]('s', "sample") required () action { (x, c) =>
     c.copy(sample = x)
-  } text ""
+  } text "Sample name in the vcf file"
   opt[Int]("minDP") action { (x, c) =>
     c.copy(minDP = x)
-  } text ""
+  } text "Minimal total depth"
   opt[Int]("minAP") action { (x, c) =>
     c.copy(minAP = x)
-  } text ""
+  } text "Minimal alternative depth"
   opt[Double]("homoFraction") action { (x, c) =>
     c.copy(homoFraction = x)
-  } text ""
+  } text "If alleles are above this fraction it's being seen as homozygous. Default if 0.8"
   opt[Int]("ploidy") action { (x, c) =>
     c.copy(ploidy = x)
   } text "Specify the ploidy as a number: '1' for haploid, '2' for diploid etc."
   opt[Double]("seqError") action { (x, c) =>
     c.copy(seqError = x)
-  } text ""
+  } text "Expected sequencing error rate, default is 0.005"
   opt[Unit]("refCalls") action { (_, c) =>
     c.copy(refCalls = true)
-  } text ""
+  } text "If set refcalls are also writen. Warning: This will results in a very large vcf file"
 }
