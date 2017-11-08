@@ -24,13 +24,18 @@ object MpileupToVcf extends ToolCommand[Args] {
 
     val writer = new PrintWriter(cmdArgs.output)
     writer.println("##fileformat=VCFv4.1")
-    writer.println("##ALT=<ID=REF,Description=\"Placeholder if location has no ALT alleles\">")
-    writer.println("##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">")
+    writer.println(
+      "##ALT=<ID=REF,Description=\"Placeholder if location has no ALT alleles\">")
+    writer.println(
+      "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">")
     writer.println(
       "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency, for each ALT allele, in the same order as listed\">")
-    writer.println("##FORMAT=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">")
-    writer.println("##FORMAT=<ID=AD,Number=.,Type=Integer,Description=\"Total Allele Depth\">")
-    writer.println("##FORMAT=<ID=FREQ,Number=A,Type=Float,Description=\"Allele Frequency\">")
+    writer.println(
+      "##FORMAT=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">")
+    writer.println(
+      "##FORMAT=<ID=AD,Number=.,Type=Integer,Description=\"Total Allele Depth\">")
+    writer.println(
+      "##FORMAT=<ID=FREQ,Number=A,Type=Float,Description=\"Allele Frequency\">")
     writer.println(
       "##FORMAT=<ID=RFC,Number=1,Type=Integer,Description=\"Reference Forward Reads\">")
     writer.println(
@@ -43,8 +48,10 @@ object MpileupToVcf extends ToolCommand[Args] {
       "##FORMAT=<ID=SEQ-ERR,Number=.,Type=Float,Description=\"Probability to not be a sequence error with error rate " + cmdArgs.seqError + "\">")
     writer.println(
       "##FORMAT=<ID=MA-SEQ-ERR,Number=1,Type=Float,Description=\"Minimal probability for all alternative alleles to not be a sequence error with error rate " + cmdArgs.seqError + "\">")
-    writer.println("##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">")
-    writer.println("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" + cmdArgs.sample)
+    writer.println(
+      "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">")
+    writer.println(
+      "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" + cmdArgs.sample)
     val inputStream = if (cmdArgs.input != null) {
       Source.fromFile(cmdArgs.input).getLines()
     } else {
@@ -66,7 +73,8 @@ object MpileupToVcf extends ToolCommand[Args] {
       val mpileup = values(4)
       //val qual = values(5)
 
-      val counts: mutable.Map[String, Counts] = mutable.Map(ref.toUpperCase -> new Counts(0, 0))
+      val counts: mutable.Map[String, Counts] =
+        mutable.Map(ref.toUpperCase -> new Counts(0, 0))
 
       def addCount(s: String) {
         val upper = s.toUpperCase
@@ -107,14 +115,17 @@ object MpileupToVcf extends ToolCommand[Args] {
         }
       }
 
-      val binomial = new Binomial(reads, cmdArgs.seqError, RandomEngine.makeDefault())
+      val binomial =
+        new Binomial(reads, cmdArgs.seqError, RandomEngine.makeDefault())
       val info: ArrayBuffer[String] = ArrayBuffer("DP=" + reads)
-      val format: mutable.Map[String, Any] = mutable.Map("DP" -> reads.toString)
+      val format: mutable.Map[String, Any] =
+        mutable.Map("DP" -> reads.toString)
       val alt: ArrayBuffer[String] = new ArrayBuffer
       var maSeqErr: Option[Double] = None
       format += ("RFC" -> counts(ref.toUpperCase).forward.toString)
       format += ("RRC" -> counts(ref.toUpperCase).reverse.toString)
-      format += ("AD" -> (counts(ref.toUpperCase).forward + counts(ref.toUpperCase).reverse).toString)
+      format += ("AD" -> (counts(ref.toUpperCase).forward + counts(
+        ref.toUpperCase).reverse).toString)
       format += ("SEQ-ERR" -> (1.0 - binomial.cdf(
         counts(ref.toUpperCase).forward + counts(ref.toUpperCase).reverse)).toString)
       if (reads >= cmdArgs.minDP)
@@ -128,9 +139,13 @@ object MpileupToVcf extends ToolCommand[Args] {
             case _ => maSeqErr = Some(seqErr)
           }
           format += ("SEQ-ERR" -> (format("SEQ-ERR") + "," + seqErr.toString))
-          format += ("AFC" -> ((if (format.contains("AFC")) format("AFC") + "," else "") + value.forward))
-          format += ("ARC" -> ((if (format.contains("ARC")) format("ARC") + "," else "") + value.reverse))
-          format += ("FREQ" -> ((if (format.contains("FREQ")) format("FREQ") + "," else "") +
+          format += ("AFC" -> ((if (format.contains("AFC")) format("AFC") + ","
+                                else "") + value.forward))
+          format += ("ARC" -> ((if (format.contains("ARC")) format("ARC") + ","
+                                else "") + value.reverse))
+          format += ("FREQ" -> ((if (format.contains("FREQ"))
+                                   format("FREQ") + ","
+                                 else "") +
             round((value.forward + value.reverse).toDouble / reads * 1E4).toDouble / 1E2))
         }
 
@@ -146,12 +161,15 @@ object MpileupToVcf extends ToolCommand[Args] {
 
         for (p <- 0 to alt.size if gt.size < cmdArgs.ploidy) {
           var max = -1
-          for (a <- ad.indices if ad(a) > (if (max >= 0) ad(max) else -1) && !gt.contains(a))
+          for (a <- ad.indices
+               if ad(a) > (if (max >= 0) ad(max) else -1) && !gt.contains(a))
             max = a
           val f = ad(max).toDouble / left
-          for (_ <- 0 to floor(f).toInt if gt.size < cmdArgs.ploidy) gt.append(max)
+          for (_ <- 0 to floor(f).toInt if gt.size < cmdArgs.ploidy)
+            gt.append(max)
           if (f - floor(f) >= cmdArgs.homoFraction) {
-            for (_ <- p to cmdArgs.ploidy if gt.size < cmdArgs.ploidy) gt.append(max)
+            for (_ <- p to cmdArgs.ploidy if gt.size < cmdArgs.ploidy)
+              gt.append(max)
           }
           left -= ad(max)
         }
@@ -166,12 +184,13 @@ object MpileupToVcf extends ToolCommand[Args] {
             ".",
             info.mkString(";"),
             "GT:" + format.keys.mkString(":"),
-            gt.sortWith(_ < _).mkString("/") + ":" + format.values.mkString(":")
+            gt.sortWith(_ < _).mkString("/") + ":" + format.values.mkString(
+              ":")
           ).mkString("\t"))
       }
     }
     writer.close()
-    
+
     logger.info("Done")
   }
 }
