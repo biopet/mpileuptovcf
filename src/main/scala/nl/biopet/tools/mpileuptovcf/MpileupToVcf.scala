@@ -193,4 +193,34 @@ object MpileupToVcf extends ToolCommand[Args] {
 
     logger.info("Done")
   }
+
+  def descriptionText: String =
+    """
+      |This tool enables a user to extract a VCF file out a mpileup file generated from the BAM file using *samtools mpileup*,
+      |for instance. The tool can also stream through STDin so that it is not necessary to store the mpileup file
+      |on disk. Mpileup files can to be very large because they describe each covered base position in the genome on a per
+      |read basis, so it is not desired to store them.
+    """.stripMargin
+
+  def manualText: String =
+    s"""
+       |$toolName comes with various options. See the usage for more details. The tool can stream from stdin or accept
+       |a mpileup file. An output file and the name of the sample are always required.
+     """.stripMargin
+
+  def exampleText: String =
+    s"""
+       |To convert a mpileup file to vcf from a haploid organism and an expected sequencing error rate of 0.010"
+       |${example("-I",
+                  "input.mpileup",
+                  "-o",
+                  "output.vcf",
+                  "--sample",
+                  "Yeast5302",
+                  "--ploidy",
+                  "1",
+                  "--seqError",
+                  "0.010")}
+       |
+     """.stripMargin
 }

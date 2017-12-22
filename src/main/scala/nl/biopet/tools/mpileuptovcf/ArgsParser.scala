@@ -11,7 +11,7 @@ class ArgsParser(toolCommand: ToolCommand[Args])
   } text "input, default is stdin"
   opt[File]('o', "output") required () valueName "<file>" action { (x, c) =>
     c.copy(output = x)
-  } text "out is a required file property"
+  } text "output file (required)"
   opt[String]('s', "sample") required () action { (x, c) =>
     c.copy(sample = x)
   } text "Sample name in the vcf file"
