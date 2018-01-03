@@ -243,5 +243,12 @@ object MpileupToVcf extends ToolCommand[Args] {
                   "--seqError",
                   "0.010")}
        |
+       |To convert a mpileup directly from standard out:
+       |
+       |    samtools mpileup <bam> | ${example(
+         "-o",
+         "<output_vcf>",
+         "--sample",
+         "E.coli243").stripPrefix("\n\n    ")}
      """.stripMargin
 }
