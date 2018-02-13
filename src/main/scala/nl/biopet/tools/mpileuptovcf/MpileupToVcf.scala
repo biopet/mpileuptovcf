@@ -87,8 +87,8 @@ object MpileupToVcf extends ToolCommand[Args] {
       val ref = values(2) match {
         case "A" | "T" | "G" | "C" => values(2)
         case "a" | "t" | "g" | "c" => values(2).toUpperCase
-        case "U" | "u" => "T"
-        case _ => "N"
+        case "U" | "u"             => "T"
+        case _                     => "N"
       }
       val reads = values(3).toInt
       val mpileup = values(4)
@@ -157,7 +157,7 @@ object MpileupToVcf extends ToolCommand[Args] {
           val seqErr = 1.0 - binomial.cdf(value.forward + value.reverse)
           maSeqErr match {
             case Some(x) if x < seqErr =>
-            case _ => maSeqErr = Some(seqErr)
+            case _                     => maSeqErr = Some(seqErr)
           }
           format += ("SEQ-ERR" -> (format("SEQ-ERR") + "," + seqErr.toString))
           format += ("AFC" -> ((if (format.contains("AFC")) format("AFC") + ","
@@ -172,7 +172,7 @@ object MpileupToVcf extends ToolCommand[Args] {
 
       maSeqErr match {
         case Some(x) => format += ("MA-SEQ-ERR" -> x)
-        case _ =>
+        case _       =>
       }
 
       if (alt.nonEmpty || cmdArgs.refCalls) {
@@ -205,8 +205,7 @@ object MpileupToVcf extends ToolCommand[Args] {
             ".",
             info.mkString(";"),
             "GT:" + format.keys.mkString(":"),
-            gt.sortWith(_ < _).mkString("/") + ":" + format.values.mkString(
-              ":")
+            gt.sortWith(_ < _).mkString("/") + ":" + format.values.mkString(":")
           ).mkString("\t"))
       }
     }
